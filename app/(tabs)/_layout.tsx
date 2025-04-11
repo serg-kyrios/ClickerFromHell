@@ -32,7 +32,7 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="paperplane.fill" color={color} />
+            <IconSymbol size={28} name="burst.fill" color={color} />
           ),
         }}
       />
@@ -42,7 +42,7 @@ export default function TabLayout() {
           title: "Explore",
           tabBarIcon: ({ color }) => (
             // <IconSymbol size={28} name="paperplane.fill" color={color} />
-            <IconSymbol size={28} name="wand.and.stars.inverse" color={color} />
+            <IconSymbol size={28} name="sparkles" color={color} />
           ),
         }}
       />
@@ -51,7 +51,7 @@ export default function TabLayout() {
         options={{
           title: "Shop",
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="cloud.bolt.rain.fill" color={color} />
+            <IconSymbol size={28} name="eye.fill" color={color} />
           ),
         }}
       />
