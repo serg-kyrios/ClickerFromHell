@@ -17,7 +17,9 @@ import { Link, Stack, useRouter } from "expo-router";
 import shop from "./shop";
 import HellButton from "..//../components/HellButton";
 import { hellEffect } from "@/components/utils/hellEffect";
-
+import HellFlash from "..//../components/HellFlash";
+import GameScreen from "@/screens/GameScreen";
+// import FinalScreen from "../components/FinalScreen";
 export default function HomeScreen() {
   const router = useRouter();
   const [souls, setSouls] = useState(0);
@@ -52,16 +54,12 @@ export default function HomeScreen() {
       <View style={{ height: 20 }} />
       <Button title="🛒 Магазин душ" onPress={() => router.push("/shop")} />
       <View style={{ height: 20 }} />
+      <HellButton onReset={handleRestart} onFlash={playScream} />
+
       {/* <Button title="🔁" onPress={reset} /> */}
-      <TouchableOpacity
-        onPress={async () => {
-          await playScream();
-          Vibration.vibrate();
-          reset();
-        }}
-      >
+      {/* <TouchableOpacity onPress={() => HellButton}>
         <Text style={styles.buttonText}>😈 Почати знову (Hell+)</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 }

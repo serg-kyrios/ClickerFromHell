@@ -1,3 +1,4 @@
+import { Audio } from "expo-av";
 import React, { useRef } from "react";
 import {
   Text,
@@ -6,20 +7,41 @@ import {
   Vibration,
   StyleSheet,
 } from "react-native";
-import { Audio } from "expo-av";
 
-export default function HellButton({ onReset }) {
+// 🔥 Типи пропсів
+type HellButtonProps = {
+  onReset: () => void;
+  onFlash: () => void;
+};
+
+export default function HellButton({ onReset, onFlash }: HellButtonProps) {
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
-  const playScream = async () => {
-    const { sound } = await Audio.Sound.createAsync(
-      require("../assets/sounds/hell-scream.mp3")
-    );
-    await sound.playAsync();
+  const handlePress = async () => {
+    try {
+      const { sound } = await Audio.Sound.createAsync(
+        require("../assets/sounds/hell-scream.mp3")
+      );
+      await sound.playAsync();
+
+      triggerShake();
+      onFlash(); // ⚡ Спалах
+      onReset(); // 🔄 Скидання гри
+
+      // Автоматичне вивільнення ресурсу після завершення
+      sound.setOnPlaybackStatusUpdate((status) => {
+        if (!status.isLoaded || status.didJustFinish) {
+          sound.unloadAsync();
+        }
+      });
+    } catch (error) {
+      console.error("Помилка при відтворенні звуку:", error);
+    }
   };
 
   const triggerShake = () => {
-    Vibration.vibrate(500); // альтернатива трясці
+    Vibration.vibrate(500); // 🌀 Тряска
+
     Animated.sequence([
       Animated.timing(scaleAnim, {
         toValue: 1.2,
@@ -39,16 +61,10 @@ export default function HellButton({ onReset }) {
     ]).start();
   };
 
-  const handlePress = async () => {
-    await playScream();
-    triggerShake();
-    onReset(); // функція скидання гри
-  };
-
   return (
     <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
       <TouchableOpacity onPress={handlePress} style={styles.button}>
-        <Text style={styles.text}>😈 Почати знову (Hell+)</Text>
+        <Text style={styles.text}>😈 Почати знову (Hell++)</Text>
       </TouchableOpacity>
     </Animated.View>
   );
