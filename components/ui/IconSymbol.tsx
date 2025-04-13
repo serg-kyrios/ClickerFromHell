@@ -1,14 +1,8 @@
 // This file is a fallback for using MaterialIcons on Android and web.
-import Foundation from "@expo/vector-icons/Foundation";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { SymbolWeight } from "expo-symbols";
 import React from "react";
-import {
-  OpaqueColorValue,
-  StyleProp,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+import { OpaqueColorValue, StyleProp, TextStyle } from "react-native";
 
 const MAPPING = {
   "shop.fill": "storefront", // Магазин

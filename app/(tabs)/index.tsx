@@ -1,10 +1,22 @@
 // app/index.tsx
-import { View, Text, Button, StyleSheet, Platform, Image } from "react-native";
+import { Audio } from "expo-av";
+import { Vibration } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Platform,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import useCounterStore from "..//../store/useCounterStore";
 
 import { useState } from "react";
 import { Link, Stack, useRouter } from "expo-router";
 import shop from "./shop";
+import HellButton from "..//../components/HellButton";
+import { hellEffect } from "@/components/utils/hellEffect";
 
 export default function HomeScreen() {
   const router = useRouter();
@@ -13,6 +25,23 @@ export default function HomeScreen() {
   const increase = useCounterStore((state) => state.increase);
   const decrease = useCounterStore((state) => state.decrease);
   const reset = useCounterStore((state) => state.reset);
+
+  const [sound, setSound] = useState();
+
+  async function playScream() {
+    const { sound } = await Audio.Sound.createAsync(
+      require("..//../assets/sounds/hell-scream.mp3") // шлях до твого аудіо
+    );
+    // setSound(sound);
+    await sound.playAsync();
+  }
+
+  async function handleRestart() {
+    await playScream();
+
+    // тут скидання гри
+    reset(); // заміни на свою функцію, яка скидає стан гри
+  }
 
   return (
     <View style={styles.container}>
@@ -23,7 +52,16 @@ export default function HomeScreen() {
       <View style={{ height: 20 }} />
       <Button title="🛒 Магазин душ" onPress={() => router.push("/shop")} />
       <View style={{ height: 20 }} />
-      <Button title="🔁" onPress={reset} />
+      {/* <Button title="🔁" onPress={reset} /> */}
+      <TouchableOpacity
+        onPress={async () => {
+          await playScream();
+          Vibration.vibrate();
+          reset();
+        }}
+      >
+        <Text style={styles.buttonText}>😈 Почати знову (Hell+)</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -44,5 +82,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "#fff",
     marginBottom: 10,
+  },
+  buttonText: {
+    fontSize: 20,
+    color: "red",
+    fontWeight: "bold",
+    textShadowColor: "#000",
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
 });
